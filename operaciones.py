@@ -87,3 +87,30 @@ def promedio_semanal_edificio(matriz):
         return None
     return sum(totales) / len(totales)
 
+# Las listas de max y min es para el caso de que haya mas de un dia con valor max.
+# En caso de que todos los valores sean -1 retorna None.
+# Las listas tienen el nombre del dia (texto), no la posicion.
+def dia_extremo(matriz, semana):
+    dias_semana = matriz[semana]
+    valor_max = None
+    valor_min = None
+    dias_max = []
+    dias_min = []
+    for dia in range(len(dias_semana)):
+        valor = dias_semana[dia]
+        if valor != -1:
+            if valor_max is None or valor > valor_max:
+                valor_max = valor
+                dias_max = [dia]
+            elif valor == valor_max:
+                dias_max.append(dia)
+            if valor_min is None or valor < valor_min:
+                valor_min = valor
+                dias_min = [dia]
+            elif valor == valor_min:
+                dias_min.append(dia)
+    if valor_max is None:
+        return None
+    nombres_max = [DIAS[dia] for dia in dias_max]
+    nombres_min = [DIAS[dia] for dia in dias_min]
+    return valor_max, nombres_max, valor_min, nombres_min
