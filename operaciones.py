@@ -114,3 +114,68 @@ def dia_extremo(matriz, semana):
     nombres_max = [DIAS[dia] for dia in dias_max]
     nombres_min = [DIAS[dia] for dia in dias_min]
     return valor_max, nombres_max, valor_min, nombres_min
+
+# Uso lambda para tomar el total de totales y asi poder decidir el orden para
+# el ranking.
+def ranking_semanas(matriz):
+    totales = []
+    for semana in range(len(matriz)):
+        if semana_completa(matriz, semana):
+            totales.append((semana, total_semana(matriz, semana)))
+    clave = lambda item: item[1]
+    for i in range(len(totales)):
+        for j in range(len(totales) - 1 - i):
+            if clave(totales[j]) < clave(totales[j + 1]):
+                totales[j], totales[j + 1] = totales[j + 1], totales[j]
+    return totales
+
+def top_semanas(matriz, n):
+    if validar_semana(n):
+        return ranking_semanas(matriz)[:n]
+    return None
+
+# Aca hago algo parecido a la funcion dia_extremo pero de todo el periodo.
+def dia_extremo_periodo(matriz):
+    valor_max = None
+    valor_min = None
+    ubicaciones_max = []
+    ubicaciones_min = []
+    for semana in range(len(matriz)):
+        for dia in range(len(matriz[semana])):
+            valor = matriz[semana][dia]
+            if valor != -1:
+                if valor_max is None or valor > valor_max:
+                    valor_max = valor
+                    ubicaciones_max = [(semana, DIAS[dia])]
+                elif valor == valor_max:
+                    ubicaciones_max.append((semana, DIAS[dia]))
+                if valor_min is None or valor < valor_min:
+                    valor_min = valor
+                    ubicaciones_min = [(semana, DIAS[dia])]
+                elif valor == valor_min:
+                    ubicaciones_min.append((semana, DIAS[dia]))
+    if valor_max is None:
+        return None
+    return valor_max, ubicaciones_max, valor_min, ubicaciones_min
+
+def semana_extremo_periodo(matriz):
+    valor_max = None
+    valor_min = None
+    semanas_max = []
+    semanas_min = []
+    for semana in range(len(matriz)):
+        if semana_completa(matriz, semana):
+            total = total_semana(matriz, semana)
+            if valor_max is None or total > valor_max:
+                valor_max = total
+                semanas_max = [semana]
+            elif total == valor_max:
+                semanas_max.append(semana)
+            if valor_min is None or total < valor_min:
+                valor_min = total
+                semanas_min = [semana]
+            elif total == valor_min:
+                semanas_min.append(semana)
+    if valor_max is None:
+        return None
+    return valor_max, semanas_max, valor_min, semanas_min
