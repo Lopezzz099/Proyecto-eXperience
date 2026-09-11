@@ -12,7 +12,7 @@ def validar_dia(dia):
     return type(dia) == str and dia.lower().title() in DIAS
 
 def validar_valor(valor):
-    return type(valor) in (int, float) and valor >= 0
+    return type(valor) in (int) and valor >= 0
 
 def validar_mes(mes):
     return type(mes) == str and mes.lower().title() in MESES
@@ -217,3 +217,9 @@ def generar_datos_random(matriz, probabilidad_incompleta=0.1):
                 matriz[semana][dia] = -1
             else:
                 matriz[semana][dia] = random.randint(0, 1000)
+
+def datos_edificio(matrices, codigo):
+    indice = buscar_edificio(codigo)
+    if indice is None:
+        return None
+    return matrices[indice], OBJETIVOS[indice]
