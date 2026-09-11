@@ -1,6 +1,6 @@
 # VALIDACIONES
 
-from datos import DIAS, OBJETIVOS, MESES, EDIFICIOS, crear_matriz
+from datos import DIAS, OBJETIVOS, MESES, EDIFICIOS
 
 def validar_edificio(codigo):
     return codigo in EDIFICIOS
@@ -12,7 +12,7 @@ def validar_dia(dia):
     return type(dia) == str and dia.lower().title() in DIAS
 
 def validar_valor(valor):
-    return type(valor) in (int) and valor >= 0
+    return type(valor) in (int, float) and valor >= 0
 
 def validar_mes(mes):
     return type(mes) == str and mes.lower().title() in MESES
@@ -130,9 +130,7 @@ def ranking_semanas(matriz):
     return totales
 
 def top_semanas(matriz, n):
-    if validar_semana(n):
-        return ranking_semanas(matriz)[:n]
-    return None
+    return ranking_semanas(matriz)[:n]
 
 # Aca hago algo parecido a la funcion dia_extremo pero de todo el periodo.
 def dia_extremo_periodo(matriz):
