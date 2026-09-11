@@ -179,3 +179,41 @@ def semana_extremo_periodo(matriz):
     if valor_max is None:
         return None
     return valor_max, semanas_max, valor_min, semanas_min
+
+# Aca solo tomo solo semanas completas en ambos edificios a la vez.
+def total_periodo_comparable(matriz_a, matriz_b):
+    total_a = 0
+    total_b = 0
+    for semana in range(len(matriz_a)):
+        if semana_completa(matriz_a, semana) and semana_completa(matriz_b, semana):
+            total_a = total_a + total_semana(matriz_a, semana)
+            total_b = total_b + total_semana(matriz_b, semana)
+    return total_a, total_b
+
+# Ahora a partir de los totales de la funcion total_periodo_comparable
+# se decide cual es el mayor/menor teniendo en cuenta que puede haber
+# empate. 
+def edificio_extremo(total_a, total_b):
+    valor_max = max(total_a, total_b)
+    valor_min = min(total_a, total_b)
+    edificios_max = []
+    edificios_min = []
+    if total_a == valor_max:
+        edificios_max.append(EDIFICIOS[0])
+    if total_b == valor_max:
+        edificios_max.append(EDIFICIOS[1])
+    if total_a == valor_min:
+        edificios_min.append(EDIFICIOS[0])
+    if total_b == valor_min:
+        edificios_min.append(EDIFICIOS[1])
+    return valor_max, edificios_max, valor_min, edificios_min
+
+import random
+
+def generar_datos_random(matriz, probabilidad_incompleta=0.1):
+    for semana in range(len(matriz)):
+        for dia in range(len(matriz[semana])):
+            if random.random() < probabilidad_incompleta:
+                matriz[semana][dia] = -1
+            else:
+                matriz[semana][dia] = random.randint(0, 1000)
