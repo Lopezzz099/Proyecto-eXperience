@@ -130,7 +130,9 @@ def ranking_semanas(matriz):
     return totales
 
 def top_semanas(matriz, n):
-    return ranking_semanas(matriz)[:n]
+    if validar_semana(n):
+        return ranking_semanas(matriz)[:n]
+    return None
 
 # Aca hago algo parecido a la funcion dia_extremo pero de todo el periodo.
 def dia_extremo_periodo(matriz):

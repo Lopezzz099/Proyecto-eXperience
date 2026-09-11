@@ -25,6 +25,9 @@ def consultar_edificio(matrices):
 
     matriz, objetivo = datos_edificio(matrices, codigo)
 
+    print("Datos registrados:")
+    mostrar_matriz(matriz)
+
     for semana in range(len(matriz)):
         print(f"Semana {semana + 1}:")
         if semana_completa(matriz, semana):
@@ -246,6 +249,16 @@ def informes(matrices, mes):
     else:
         print("Opción inválida.")
 
+def mostrar_matriz(matriz):
+    for semana in range(len(matriz)):
+        print(f"Semana {semana + 1}:")
+        for dia in range(len(matriz[semana])):
+            valor = matriz[semana][dia]
+            if valor == -1:
+                print(f"  {DIAS[dia]}: sin dato")
+            else:
+                print(f"  {DIAS[dia]}: {valor} kWh")
+
 def main():
     matrices = [crear_matriz(), crear_matriz()]
     mes = pedir_mes()
@@ -277,5 +290,8 @@ def main():
                 informes(matrices, mes)
             elif opcion == 7:
                 salir = True
+                print("Saliendo del sistema.")
         else:
             print("Opción inválida.")
+
+main()

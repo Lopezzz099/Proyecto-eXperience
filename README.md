@@ -32,3 +32,38 @@ También se generará, de forma independiente para cada edificio, un ranking de 
 Se utilizarán tuplas para la información fija del sistema, por ejemplo los días de la semana (“Lunes”, “Martes”, “Miércoles”, “Jueves”, “Viernes”), los objetivos semanales de cada edificio relacionados por posición (1000, 800) y los doce meses del año, validando que la selección del mes de análisis sea una de ellas. Se utilizará comprensión de listas, por ejemplo, para generar la lista de semanas que no alcanzaron el objetivo semanal. Asimismo, se utilizará una lista homogénea para almacenar los totales semanales de generación de cada edificio antes de ordenarlos para construir el ranking. 
 
 Quedan fuera del alcance de esta etapa el uso de archivos, bases de datos o cualquier otro tipo de persistencia, la lectura automática de paneles solares o sensores reales, la captura de datos en tiempo real, la autenticación de usuarios, el mantenimiento de un histórico de varios meses y el desarrollo de una aplicación web o móvil. Toda la información permanecerá únicamente en memoria durante la ejecución del programa. 
+
+# Como ejecutar y probar el sistema:
+
+El proyecto está escrito en Python y se ejecuta desde la terminal.
+
+**Requisitos:** tener Python 3 instalado.
+
+**Ejecución:**
+
+```
+python main.py
+```
+
+Al iniciar, el sistema pedirá el mes de análisis (debe ser uno de los doce meses del año; si se ingresa un valor inválido, se vuelve a pedir). A partir de ahí se muestra el menú principal:
+
+1. Registrar/actualizar generación
+2. Consultar edificio
+3. Indicadores semanales
+4. Alertas de cumplimiento
+5. Rankings
+6. Informes
+7. Salir
+
+Cada opción vuelve a mostrar el menú principal al terminar, por lo que se puede seguir operando sin reiniciar el programa.
+
+**Cómo probar el sistema:**
+
+Como las matrices arrancan vacías (con -1 en cada celda), conviene cargar datos antes de consultar resultados. Hay dos formas:
+
+- **Carga manual:** opción 1 → "Cargar dato manualmente". Pide edificio (ED-A / ED-B), semana (1-4), día (Lunes a Viernes) y el valor en kWh, validando cada dato antes de aceptarlo.
+- **Carga rápida con datos aleatorios:** opción 2 → "Generar datos aleatorios para ambos edificios". Completa automáticamente las 4 semanas de ambos edificios (dejando ocasionalmente algún día sin cargar, para poder probar también el manejo de semanas incompletas) y es la forma más rápida de tener datos para probar el resto del menú.
+
+Con datos cargados, se pueden probar el resto de las opciones: consultar un edificio puntual (2), ver indicadores de una semana específica (3), revisar alertas de cumplimiento del objetivo (4), ver rankings y extremos del período (5), y generar los distintos informes —semanal, comparación entre edificios, cumplimiento, Top 3, máximos/mínimos y resumen mensual— desde la opción 6.
+
+Para probar las validaciones, alcanza con ingresar datos fuera de lo esperado (por ejemplo, un código de edificio inexistente, una semana fuera de 1-4, un valor negativo o con letras, o un día que no exista): el sistema muestra un mensaje de error y vuelve a pedir el dato, sin cerrarse.
