@@ -12,7 +12,7 @@ def validar_dia(dia):
     return type(dia) == str and dia.lower().title() in DIAS
 
 def validar_valor(valor):
-    return type(valor) in (int, float) and valor >= 0
+    return type(valor) == int and valor >= 0
 
 def validar_mes(mes):
     return type(mes) == str and mes.lower().title() in MESES
@@ -184,10 +184,14 @@ def semana_extremo_periodo(matriz):
 def total_periodo_comparable(matriz_a, matriz_b):
     total_a = 0
     total_b = 0
+    semanas_comparables = 0
     for semana in range(len(matriz_a)):
         if semana_completa(matriz_a, semana) and semana_completa(matriz_b, semana):
             total_a = total_a + total_semana(matriz_a, semana)
             total_b = total_b + total_semana(matriz_b, semana)
+            semanas_comparables += 1
+    if semanas_comparables == 0:
+        return None
     return total_a, total_b
 
 # Ahora a partir de los totales de la funcion total_periodo_comparable
@@ -207,16 +211,6 @@ def edificio_extremo(total_a, total_b):
     if total_b == valor_min:
         edificios_min.append(EDIFICIOS[1])
     return valor_max, edificios_max, valor_min, edificios_min
-
-import random
-
-def generar_datos_random(matriz, probabilidad_incompleta=0.1):
-    for semana in range(len(matriz)):
-        for dia in range(len(matriz[semana])):
-            if random.random() < probabilidad_incompleta:
-                matriz[semana][dia] = -1
-            else:
-                matriz[semana][dia] = random.randint(0, 1000)
 
 def datos_edificio(matrices, codigo):
     indice = buscar_edificio(codigo)

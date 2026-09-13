@@ -1,5 +1,5 @@
 # Tuplas
-DIAS = ("Lunes", "Martes", "Miercoles", "Jueves", "Viernes")
+DIAS = ("Lunes", "Martes", "Miércoles", "Jueves", "Viernes")
 MESES = ("Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre")
 
 EDIFICIOS = ("ED-A", "ED-B")

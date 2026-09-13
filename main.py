@@ -5,8 +5,7 @@ from operaciones import (
     contar_cumplimiento_por_semana, cumplimiento_semana, buscar_edificio,
     porcentaje_cumplimiento, promedio_diario_semana, promedio_semanal_edificio,
     dia_extremo, top_semanas, dia_extremo_periodo,
-    semana_extremo_periodo, total_periodo_comparable, edificio_extremo,
-    generar_datos_random, datos_edificio
+    semana_extremo_periodo, total_periodo_comparable, edificio_extremo, datos_edificio
 )
 
 def pedir_mes():
@@ -42,45 +41,32 @@ def consultar_edificio(matrices):
 
 # Item 1 del menu el cual tiene dos subItems
 def registrar_o_generar(matrices):
-    print("1. Cargar dato manualmente")
-    print("2. Generar datos aleatorios para ambos edificios")
-    sub_opcion = input("Elija una opción: ")
-
-    if sub_opcion == "1":
+    codigo = input("Código de edificio (ED-A / ED-B): ")
+    while not validar_edificio(codigo):
+        print("Código inválido.")
         codigo = input("Código de edificio (ED-A / ED-B): ")
-        while not validar_edificio(codigo):
-            print("Código inválido.")
-            codigo = input("Código de edificio (ED-A / ED-B): ")
-        indice = buscar_edificio(codigo)
+    indice = buscar_edificio(codigo)
 
+    semana = input("Semana (1-4): ")
+    while not (semana.isdigit() and validar_semana(int(semana))):
+        print("Semana inválida.")
         semana = input("Semana (1-4): ")
-        while not (semana.isdigit() and validar_semana(int(semana))):
-            print("Semana inválida.")
-            semana = input("Semana (1-4): ")
-        semana = int(semana) - 1
+    semana = int(semana) - 1
 
+    dia = input("Día (Lunes a Viernes): ")
+    while not validar_dia(dia):
+        print("Día inválido.")
         dia = input("Día (Lunes a Viernes): ")
-        while not validar_dia(dia):
-            print("Día inválido.")
-            dia = input("Día (Lunes a Viernes): ")
-        dia = DIAS.index(dia.lower().title())
+    dia = DIAS.index(dia.lower().title())
 
+    valor = input("Energía generada (kWh): ")
+    while not (valor.isdigit() and validar_valor(int(valor))):
+        print("Valor inválido.")
         valor = input("Energía generada (kWh): ")
-        while not (valor.isdigit() and validar_valor(int(valor))):
-            print("Valor inválido.")
-            valor = input("Energía generada (kWh): ")
-        valor = int(valor)
+    valor = int(valor)
 
-        registrar_datos(matrices[indice], semana, dia, valor)
-        print("Dato registrado correctamente.")
-
-    elif sub_opcion == "2":
-        generar_datos_random(matrices[0])
-        generar_datos_random(matrices[1])
-        print("Datos aleatorios generados para ambos edificios.")
-
-    else:
-        print("Opción inválida.")
+    registrar_datos(matrices[indice], semana, dia, valor)
+    print("Dato registrado correctamente.")
 
 # Item 3
 def indicadores_semanales(matrices):
@@ -194,7 +180,11 @@ def informe_extremos(matrices):
             print(f"  Semana de menor generación: {valor_min} kWh ({texto_min})")
 
 def informe_comparacion(matrices):
-    total_a, total_b = total_periodo_comparable(matrices[0], matrices[1])
+    resultado = total_periodo_comparable(matrices[0], matrices[1])
+    if resultado is None:
+        print("No existen semanas completas comparables entre ambos edificios.")
+        return
+    total_a, total_b = resultado
     valor_max, edificios_max, valor_min, edificios_min = edificio_extremo(total_a, total_b)
     texto_max = ""
     for edificio in edificios_max:
